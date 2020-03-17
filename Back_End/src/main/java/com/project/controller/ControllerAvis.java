@@ -11,47 +11,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.model.Avis;
-import com.project.service.ServiceAvis;
+import com.project.model.Publication;
+import com.project.service.ServicePublication;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/avis")
+@RequestMapping("/publication")
 public class ControllerAvis {
 	
 	@Autowired
-	ServiceAvis serviceAv ; 
+	ServicePublication servicePublication ; 
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public Avis ajouter_modifier(@RequestBody Avis avis)
+	public Publication ajouter_modifier(@RequestBody Publication publication)
 	{
 		LocalDateTime date = LocalDateTime.now();  
 		String strDate = date.toString();
-		avis.setDate(strDate);
-		serviceAv.addOrModify(avis);
+		publication.setDate(strDate);
+		servicePublication.addOrModify(publication);
 			  
 		 
-		return avis;
+		return publication;
 		     
 		     
 	}
 
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
 	public void supprimer_Avis(@PathVariable("id")int id) {
-		serviceAv.deleteById(id);
+		servicePublication.deleteById(id);
 	}
 	
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public List<Avis> getAll()
+	public List<Publication> getAll()
 	{
-		return serviceAv.getAll();
+		return servicePublication.getAll();
 	}
 	
 	@RequestMapping(value="/getByUser/{login}",method=RequestMethod.GET)
-	public List<Avis> getByUser(@PathVariable("login") String login)
+	public List<Publication> getByUser(@PathVariable("login") String login)
 	{
-		return serviceAv.getAvisByUser(login);
+		return servicePublication.getAvisByUser(login);
 	}
 
 }

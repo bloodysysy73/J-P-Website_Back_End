@@ -18,29 +18,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.model.Commentaire;
-import com.project.service.ServiceCommentaire;
+import com.project.model.TimeLineCard;
+import com.project.model.Role;
+import com.project.service.ServiceTimeLineCard;
 
 
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/commentaire")
-public class ControllerCommentaire {
+@RequestMapping(value = "/timelinecard")
+public class ControllerTimeLineCard {
 
 	@Autowired
-	ServiceCommentaire su;
+	ServiceTimeLineCard su;
 		
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public Commentaire addormodify(@RequestBody Commentaire commentaire)
+	public TimeLineCard addormodify(@RequestBody TimeLineCard timeLineCard)
+	{
+		Date poste_le = Calendar.getInstance().getTime();  
+		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm");  
+		String strDate = dateFormat.format(poste_le);  
+		timeLineCard.setPoste_le(strDate);
+		
+		//if(timeLineCard.getNote()==0) {timeLineCard.setNote(null);}
+		return su.addOrModifyTimeLineCard(timeLineCard);
+	}
+	
+	@RequestMapping(value="/edit",method=RequestMethod.PATCH)
+	public TimeLineCard modify(@RequestBody TimeLineCard timeLineCard)
 	{
 		Date date = Calendar.getInstance().getTime();  
 		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm");  
 		String strDate = dateFormat.format(date);  
-		commentaire.setDate(strDate);
+		timeLineCard.setDate(strDate);
 		
-		//if(commentaire.getNote()==0) {commentaire.setNote(null);}
-		return su.addOrModifyCommentaire(commentaire);
+		//if(timeLineCard.getNote()==0) {timeLineCard.setNote(null);}
+		return su.addOrModifyTimeLineCard(timeLineCard);
 	}
 	
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
@@ -52,15 +65,15 @@ public class ControllerCommentaire {
 	
 	
 	@RequestMapping(value="/findbyid/{id}",method=RequestMethod.GET)
-	public Optional<Commentaire> findbyId(@PathVariable("id")int id)
+	public Optional<TimeLineCard> findbyId(@PathVariable("id")int id)
 	{
 		return su.findById(id);
 	}
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public List<Commentaire> getAll()
+	public List<TimeLineCard> getAll()
 	{
-		return su.getAllCommentaire();
+		return su.getAllTimeLineCard();
 	}
 	
 	
