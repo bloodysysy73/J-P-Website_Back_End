@@ -10,6 +10,6 @@ public interface ServicePublication {
 	public void deleteById(int id);
 	public List<Publication> getAll();
 	
-	public List<Publication> getAvisByUser(String login);
+	public List<Publication> getPublicationByUser(String login);
 	
 }

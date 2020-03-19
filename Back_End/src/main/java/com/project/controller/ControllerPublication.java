@@ -17,7 +17,7 @@ import com.project.service.ServicePublication;
 @RestController
 @CrossOrigin
 @RequestMapping("/publication")
-public class ControllerAvis {
+public class ControllerPublication {
 	
 	@Autowired
 	ServicePublication servicePublication ; 
@@ -37,7 +37,7 @@ public class ControllerAvis {
 	}
 
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
-	public void supprimer_Avis(@PathVariable("id")int id) {
+	public void supprimer_Publication(@PathVariable("id")int id) {
 		servicePublication.deleteById(id);
 	}
 	
@@ -51,7 +51,7 @@ public class ControllerAvis {
 	@RequestMapping(value="/getByUser/{login}",method=RequestMethod.GET)
 	public List<Publication> getByUser(@PathVariable("login") String login)
 	{
-		return servicePublication.getAvisByUser(login);
+		return servicePublication.getPublicationByUser(login);
 	}
 
 }

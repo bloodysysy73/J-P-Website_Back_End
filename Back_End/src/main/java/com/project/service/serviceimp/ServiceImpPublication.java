@@ -38,7 +38,7 @@ public class ServiceImpPublication implements ServicePublication{
 	}
 
 	@Override
-	public List<Publication> getAvisByUser(String login) {
+	public List<Publication> getPublicationByUser(String login) {
 			return PublicationRep.findAllByUser(login);
 	}
 
