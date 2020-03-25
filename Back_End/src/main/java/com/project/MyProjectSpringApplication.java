@@ -34,37 +34,30 @@ public class MyProjectSpringApplication {
 	
 	@Bean
 	public JavaMailSender getJavaMailSender() {
-	    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-	    mailSender.setHost("smtp.live.com");
-	    mailSender.setPort(25);
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+	    mailSender.setHost("smtp.gmail.com");
+	    mailSender.setPort(587);
 	     
-	    mailSender.setUsername("sylvain-guehria@hotmail.fr");
-	    mailSender.setPassword("ymvtqimskmxsgiid");
+	    mailSender.setUsername("sylvain.javadev@gmail.com");
+	    mailSender.setPassword("mamivwyviyhfhfbz");
 	     
 	    Properties props = mailSender.getJavaMailProperties();
 	    props.put("mail.transport.protocol", "smtp");
 	    props.put("mail.smtp.auth", "true");
 	    props.put("mail.smtp.starttls.enable", "true");
 	    props.put("mail.debug", "true");
-	    props.put("mail.smtp.ssl.trust", "smtp.live.com");
-	   // props.setProperty("mail.smtp.ssl.enable", "true");
 
-//	    props.put("mail.smtp.socketFactory.port", 25);
-//	    props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-//	    props.put("mail.smtp.socketFactory.fallback", "false");
-
-//   
 	     
 	    return mailSender;
 	}
 	
-	@Bean
-	public SimpleMailMessage templateSimpleMessage() {
-	    SimpleMailMessage message = new SimpleMailMessage();
-	    message.setText(
-	      "This is the test email template for your email:\n%s\n");
-	    return message;
-	}
+//	@Bean
+//	public SimpleMailMessage templateSimpleMessage() {
+//	    SimpleMailMessage message = new SimpleMailMessage();
+//	    message.setText(
+//	      "This is the test email template for your email:\n%s\n");
+//	    return message;
+//	}
 	
 
 }

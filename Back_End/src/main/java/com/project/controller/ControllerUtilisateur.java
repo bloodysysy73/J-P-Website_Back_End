@@ -1,5 +1,9 @@
 package com.project.controller;
 
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,15 +30,41 @@ public class ControllerUtilisateur {
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public Utilisateur addormodify(@RequestBody Utilisateur utilisateur) {
+		
+		Date dateInscription = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		
+		String datePourInscription = formatter.format(dateInscription);
 		String password = utilisateur.getPassword();
 		password = MyProjectSpringApplication.getpce().encode(password);
 		utilisateur.setPassword(password);
+		utilisateur.setDateInscription(datePourInscription);
+		
 		return su.addOrModifyUtilisateur(utilisateur);
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') ")
-	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	public Utilisateur modify(@RequestBody Utilisateur u) {
+		
+	//ceci car  @JsonInclude(JsonInclude.Include.NON_NULL) ne fonctionne pas, hibernate n'ignore pas les fields null
+	Utilisateur user = su.findByid(u.getId());
+
+	if(u.getLogin() == null){ u.setLogin((user.getLogin())) ;}
+	
+	if(u.getPseudo() == null){ u.setPseudo((user.getPseudo())) ;}
+
+	if(u.getPassword() == null){ u.setPassword((user.getPassword())) ;}
+
+	if(u.getNom() == null){ u.setNom((user.getNom())) ;}
+
+	if(u.getPrenom() == null){ u.setPrenom((user.getPrenom())) ;}
+
+	if(u.getAdresse() == null){ u.setAdresse((user.getAdresse())) ;}
+
+	if(u.getDateInscription() == null){ u.setDateInscription((user.getDateInscription())) ;}
+
+	//if(u.isAdherent() == null){ u.setAdherent((user.isAdherent())) ;}
 
 		return su.addOrModifyUtilisateur(u);
 	}

@@ -7,17 +7,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.project.model.TimeLineCard;
+import com.project.model.Utilisateur;
 
 
 
 @Repository
 public interface TimeLineCardRepository extends JpaRepository<TimeLineCard, Integer> {
 
-	
-	
-
-	
-
+	@Query("select t from TimeLineCard t where t.id = :id")
+	TimeLineCard findByid(@Param("id") int id);
 
 	
 }

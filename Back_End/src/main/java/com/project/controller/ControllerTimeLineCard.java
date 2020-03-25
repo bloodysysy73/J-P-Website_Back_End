@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.model.TimeLineCard;
+import com.project.model.Utilisateur;
 import com.project.model.Role;
 import com.project.service.ServiceTimeLineCard;
 
@@ -52,7 +53,11 @@ public class ControllerTimeLineCard {
 		String strDate = dateFormat.format(date);  
 		timeLineCard.setDate(strDate);
 		
-		//if(timeLineCard.getNote()==0) {timeLineCard.setNote(null);}
+		//ceci car  @JsonInclude(JsonInclude.Include.NON_NULL) ne fonctionne pas, hibernate n'ignore pas les fields null
+		TimeLineCard tlc = su.findByid(timeLineCard.getId());
+		if(timeLineCard.getDate() == null){ timeLineCard.setDate((tlc.getDate())) ;}
+		//TODO : les autre field
+		
 		return su.addOrModifyTimeLineCard(timeLineCard);
 	}
 	

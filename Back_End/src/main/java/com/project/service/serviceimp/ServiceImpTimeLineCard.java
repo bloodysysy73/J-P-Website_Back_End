@@ -43,6 +43,11 @@ public class ServiceImpTimeLineCard implements ServiceTimeLineCard{
 		TimeLineCardRep.deleteById(id);		
 	}
 
+	@Override
+	public TimeLineCard findByid(int id) {
+		return TimeLineCardRep.findByid(id) ;
+	}
+
 
 	
 }
