@@ -3,6 +3,7 @@ package com.project.service;
 import java.util.List;
 
 import com.project.model.Publication;
+import com.project.model.TimeLineCard;
 
 public interface ServicePublication {
 
@@ -11,5 +12,7 @@ public interface ServicePublication {
 	public List<Publication> getAll();
 	
 	public List<Publication> getPublicationByUser(String login);
+	public Publication findByid(int id);
+
 	
 }

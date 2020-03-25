@@ -1,6 +1,10 @@
 package com.project.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.model.Publication;
+import com.project.model.TimeLineCard;
 import com.project.service.ServicePublication;
 
 @RestController
@@ -34,6 +39,17 @@ public class ControllerPublication {
 		return publication;
 		     
 		     
+	}
+	
+	@RequestMapping(value="/edit",method=RequestMethod.PATCH)
+	public Publication modify(@RequestBody Publication Publication)
+	{		
+		//ceci car  @JsonInclude(JsonInclude.Include.NON_NULL) ne fonctionne pas, hibernate n'ignore pas les fields null
+		Publication pbct = servicePublication.findByid(Publication.getId());
+		if(Publication.getDate() == null){ Publication.setDate((pbct.getDate())) ;}
+		//TODO : les autre field
+		
+		return servicePublication.addOrModify(Publication);
 	}
 
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)

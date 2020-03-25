@@ -42,4 +42,9 @@ public class ServiceImpPublication implements ServicePublication{
 			return PublicationRep.findAllByUser(login);
 	}
 
+	@Override
+	public Publication findByid(int id) {
+		return PublicationRep.findByid(id) ;
+	}
+
 }

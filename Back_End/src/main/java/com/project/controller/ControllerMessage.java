@@ -32,9 +32,9 @@ public class ControllerMessage {
 	@Autowired
 	ServiceMessage sm;
 	
-	@Autowired
-	public SimpleMailMessage template;
-	
+//	@Autowired
+//	public SimpleMailMessage template;
+//	
 	@Autowired
 	EmailServiceImpl es;
 	
@@ -66,6 +66,7 @@ public class ControllerMessage {
 	public void mail(@RequestBody Message message)
 	{
 		String text = message.getTexte();  
+		text = "vous avez reçu un mail provenant du site de jumeau et plus, de la part de : " + message.getEmail() + " : " + text ;
 		String to = "sylvain.guehria@gmail.com";
 		String subject = message.getObjet();
 		es.sendSimpleMessage(to, subject, text);
