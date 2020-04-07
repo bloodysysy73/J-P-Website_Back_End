@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import javax.persistence.Column;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,24 +33,30 @@ public class ControllerPublication {
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public Publication ajouter_modifier(@RequestBody Publication publication)
 	{
-		LocalDateTime date = LocalDateTime.now();  
-		String strDate = date.toString();
-		publication.setDate(strDate);
-		servicePublication.addOrModify(publication);
-			  
-		 
-		return publication;
-		     
-		     
+		
+		String pattern = "dd-MM-yyyy à HH:mm";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.FRANCE);
+		String date = simpleDateFormat.format(new Date());
+		
+		publication.setDate(date);
+		return servicePublication.addOrModify(publication);
 	}
 	
-	@RequestMapping(value="/edit",method=RequestMethod.PATCH)
+	@RequestMapping(value="/edit",method=RequestMethod.PUT)
 	public Publication modify(@RequestBody Publication Publication)
 	{		
 		//ceci car  @JsonInclude(JsonInclude.Include.NON_NULL) ne fonctionne pas, hibernate n'ignore pas les fields null
 		Publication pbct = servicePublication.findByid(Publication.getId());
-		if(Publication.getDate() == null){ Publication.setDate((pbct.getDate())) ;}
-		//TODO : les autre field
+		
+		if(Publication.getTitle() == null){ Publication.setTitle((pbct.getTitle())) ;}
+		if(Publication.getDescription() == null){ Publication.setDescription((pbct.getDescription())) ;}
+		if(Publication.getImageName() == null){ Publication.setImageName((pbct.getImageName())) ;}
+		if(Publication.getTitle2() == null){ Publication.setTitle2((pbct.getTitle2())) ;}
+		if(Publication.getDescription2() == null){ Publication.setDescription2((pbct.getDescription2())) ;}
+		if(Publication.getHeure() == null){ Publication.setHeure((pbct.getHeure())) ;}
+		if(Publication.getPoste_le() == null){ Publication.setPoste_le((pbct.getPoste_le())) ;}
+		if(Publication.getIcone_name() == null){ Publication.setLogin((pbct.getLogin())) ;}
+		if(Publication.getIcone_name() == null){ Publication.setIcone_name((pbct.getDate())) ;}
 		
 		return servicePublication.addOrModify(Publication);
 	}
@@ -55,6 +64,11 @@ public class ControllerPublication {
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
 	public void supprimer_Publication(@PathVariable("id")int id) {
 		servicePublication.deleteById(id);
+	}
+	
+	@RequestMapping(value="/findbyid/{id}",method=RequestMethod.GET)
+	public Publication findPublicationById(@PathVariable("id")int id) {
+		return servicePublication.findByid(id);
 	}
 	
 	

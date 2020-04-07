@@ -27,10 +27,9 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
 	@Query("select u from Utilisateur u where u.id = :id")
 	Utilisateur findByid(@Param("id") int id);
 
+	@Query("select u.pseudo from Utilisateur u where u.login = :login")
+	String retrievepseudo(@Param("login") String login);
 
-
-
-	
 	
 }
 

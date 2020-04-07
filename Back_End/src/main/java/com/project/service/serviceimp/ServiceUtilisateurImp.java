@@ -66,6 +66,11 @@ public class ServiceUtilisateurImp implements ServiceUtilisateur {
 	public Utilisateur findByid(int id) {
 		return utilisateurrep.findByid(id) ;
 	}
+
+	@Override
+	public String retrievepseudo(String login) {
+		return utilisateurrep.retrievepseudo(login);
+	}
 	
 	
 

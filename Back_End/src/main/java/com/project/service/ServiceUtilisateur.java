@@ -19,9 +19,7 @@ public interface ServiceUtilisateur {
 	public Utilisateur findByLogin(String login); // pour le security
 	public Utilisateur findbylogin(String login); // pour l'utilisateur
 	public Utilisateur findByid(int id);
-
-	
-
+	public String retrievepseudo(String login);
 
 
 }

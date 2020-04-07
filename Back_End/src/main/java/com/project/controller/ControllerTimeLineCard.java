@@ -36,27 +36,31 @@ public class ControllerTimeLineCard {
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public TimeLineCard addormodify(@RequestBody TimeLineCard timeLineCard)
 	{
-		Date poste_le = Calendar.getInstance().getTime();  
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm");  
-		String strDate = dateFormat.format(poste_le);  
-		timeLineCard.setPoste_le(strDate);
+		String pattern = "dd-MM-yyyy à HH:mm";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String date = simpleDateFormat.format(new Date());
+
+		timeLineCard.setPoste_le(date);
 		
-		//if(timeLineCard.getNote()==0) {timeLineCard.setNote(null);}
 		return su.addOrModifyTimeLineCard(timeLineCard);
 	}
 	
-	@RequestMapping(value="/edit",method=RequestMethod.PATCH)
+	@RequestMapping(value="/edit",method=RequestMethod.PUT)
 	public TimeLineCard modify(@RequestBody TimeLineCard timeLineCard)
 	{
-		Date date = Calendar.getInstance().getTime();  
-		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm");  
-		String strDate = dateFormat.format(date);  
-		timeLineCard.setDate(strDate);
-		
+			
 		//ceci car  @JsonInclude(JsonInclude.Include.NON_NULL) ne fonctionne pas, hibernate n'ignore pas les fields null
 		TimeLineCard tlc = su.findByid(timeLineCard.getId());
-		if(timeLineCard.getDate() == null){ timeLineCard.setDate((tlc.getDate())) ;}
-		//TODO : les autre field
+		
+		if(timeLineCard.getTitle() == null){ timeLineCard.setTitle((tlc.getTitle())) ;}
+		if(timeLineCard.getDescription() == null){ timeLineCard.setDescription((tlc.getDescription())) ;}
+		if(timeLineCard.getImageName() == null){ timeLineCard.setImageName((tlc.getImageName())) ;}
+		if(timeLineCard.getTitle2() == null){ timeLineCard.setTitle2((tlc.getTitle2())) ;}
+		if(timeLineCard.getDescription2() == null){ timeLineCard.setDescription2((tlc.getDescription2())) ;}
+		if(timeLineCard.getHeure() == null){ timeLineCard.setHeure((tlc.getHeure())) ;}
+		if(timeLineCard.getPoste_le() == null){ timeLineCard.setPoste_le((tlc.getPoste_le())) ;}
+		if(timeLineCard.getIcone_name() == null){ timeLineCard.setIcone_name((tlc.getIcone_name())) ;}
+
 		
 		return su.addOrModifyTimeLineCard(timeLineCard);
 	}
