@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TimeLineCard")
+@Table(name = "Evenement")
 public class TimeLineCard {
 	/**
 	 * 
@@ -147,6 +147,14 @@ public class TimeLineCard {
 
 	public TimeLineCard() {
 		super();
+	}
+
+	public String getIcone_name() {
+		return icone_name;
+	}
+
+	public void setIcone_name(String icone_name) {
+		this.icone_name = icone_name;
 	}
 	
 	
