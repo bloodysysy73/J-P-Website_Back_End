@@ -33,6 +33,7 @@ public class ControllerTimeLineCard {
 	@Autowired
 	ServiceTimeLineCard su;
 		
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public TimeLineCard addormodify(@RequestBody TimeLineCard timeLineCard)
 	{
@@ -45,6 +46,7 @@ public class ControllerTimeLineCard {
 		return su.addOrModifyTimeLineCard(timeLineCard);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value="/edit",method=RequestMethod.PUT)
 	public TimeLineCard modify(@RequestBody TimeLineCard timeLineCard)
 	{
@@ -65,6 +67,7 @@ public class ControllerTimeLineCard {
 		return su.addOrModifyTimeLineCard(timeLineCard);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
 	public void deleteplayer(@PathVariable("id")int id) {
 		su.deletebyid(id);

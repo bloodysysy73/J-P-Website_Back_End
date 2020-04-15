@@ -50,7 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/static/img/**","/api/user/account/reset_password/init/**",
 											"/api/user/account/reset_password",
 											"/api/startProcess","/login","/index.html",
-											"/js/**","/img/**","/css/**","/user/save","/user/pseudoexist/**","/message/save", "/message/mail", "/publication/list", "/timelinecard/list", "/user/retrievepseudo").permitAll();
+											"/js/**","/img/**","/css/**","/user/save","/user/loginexist/**","/message/save", "/message/mail", "/publication/list",
+											"/timelinecard/list", "/user/retrievepseudo/**", "/user/googletoken").permitAll();
 		http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(new JWTAuthentificationFilter(authenticationManager()));
 		http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

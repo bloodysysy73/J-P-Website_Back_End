@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.project.model.Commentaire;
+import com.project.model.Question;
 import com.project.model.Utilisateur;
 
 
 
 @Repository
-public interface CommentaireRepository extends JpaRepository<Commentaire, Integer> {
+public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
 	
 	

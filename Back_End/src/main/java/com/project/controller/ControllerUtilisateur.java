@@ -1,9 +1,8 @@
 package com.project.controller;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +21,11 @@ import com.project.model.Role;
 import com.project.model.Utilisateur;
 import com.project.service.ServiceUtilisateur;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+
+
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/user")
@@ -38,7 +42,11 @@ public class ControllerUtilisateur {
 
 		String datePourInscription = formatter.format(dateInscription);
 		String password = utilisateur.getPassword();
-		password = MyProjectSpringApplication.getpce().encode(password);
+		if (password != null) {
+			password = MyProjectSpringApplication.getpce().encode(password);
+		}else {
+			password = MyProjectSpringApplication.getpce().encode("azertyuiop123456789?!");
+		}
 		utilisateur.setPassword(password);
 		utilisateur.setDateInscription(datePourInscription);
 
@@ -52,6 +60,8 @@ public class ControllerUtilisateur {
 		return su.addOrModifyUtilisateur(utilisateur);
 	}
 
+	//@PreAuthorize()
+	//TODO authorize current user
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	public Utilisateur modify(@RequestBody Utilisateur u) {
 
@@ -117,11 +127,13 @@ public class ControllerUtilisateur {
 		su.deletebyid(id);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<Utilisateur> getAll() {
 		return su.getAllUtilisateur();
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value = "/findbyid/{id}", method = RequestMethod.GET)
 	public Optional<Utilisateur> findbyId(@PathVariable("id") int id) {
 		return su.findById(id);
@@ -132,8 +144,8 @@ public class ControllerUtilisateur {
 		return su.findbylogin(login);
 	}
 
-	@RequestMapping(value = "/pseudoexist/{login}", method = RequestMethod.GET)
-	public boolean pseudoexist(@PathVariable("login") String login) {
+	@RequestMapping(value = "/loginexist/{login}", method = RequestMethod.GET)
+	public boolean loginexist(@PathVariable("login") String login) {
 		if (su.findbylogin(login) != null) {
 			return true;
 		} else {
@@ -151,6 +163,20 @@ public class ControllerUtilisateur {
 		} else {
 			return null;
 		}
+	}
+	
+	@RequestMapping(value = "/googletoken", method = RequestMethod.POST)
+	public Utilisateur checkgoogletoken(@RequestBody Utilisateur utilisateur) {
+
+	//	TODO : vérifier le token google. Si il est OK : coonecter le user et renvoyer un token valide
+//		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+//			    // Specify the CLIENT_ID of the app that accesses the backend:
+//			    .setAudience(Collections.singletonList("479915262149-5mfpd5lv59q93scecehcbdtin9ovie1c.apps.googleusercontent.com")).build();
+//
+//		
+//
+
+		return utilisateur;
 	}
 
 }
