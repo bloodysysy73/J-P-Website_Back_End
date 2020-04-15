@@ -18,29 +18,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.model.Commentaire;
-import com.project.service.ServiceCommentaire;
+import com.project.model.Question;
+import com.project.model.Utilisateur;
+import com.project.service.ServiceQuestion;
+import com.project.service.ServiceUtilisateur;
 
 
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/commentaire")
-public class ControllerCommentaire {
+@RequestMapping(value = "/question")
+public class ControllerQuestion {
 
 	@Autowired
-	ServiceCommentaire su;
+	ServiceQuestion su;
+	
+	@Autowired
+	ServiceUtilisateur us;
 		
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public Commentaire addormodify(@RequestBody Commentaire commentaire)
+	public Question addormodify(@RequestBody Question question)
 	{
+		System.out.println("QUESTION" + question);
+		Utilisateur user = new Utilisateur();
+		Utilisateur user2 = new Utilisateur();
+		user2 = question.getUser();
+
+		user = us.findbylogin(user2.getLogin());
+		
+		question.setUser(user);
+				
 		Date date = Calendar.getInstance().getTime();  
 		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm");  
 		String strDate = dateFormat.format(date);  
-		commentaire.setDate(strDate);
+		question.setDate(strDate);
 		
-		//if(commentaire.getNote()==0) {commentaire.setNote(null);}
-		return su.addOrModifyCommentaire(commentaire);
+		return su.addOrModifyQuestion(question);
 	}
 	
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
@@ -48,19 +61,16 @@ public class ControllerCommentaire {
 		su.deletebyid(id);
 	}
 	
-	
-	
-	
 	@RequestMapping(value="/findbyid/{id}",method=RequestMethod.GET)
-	public Optional<Commentaire> findbyId(@PathVariable("id")int id)
+	public Optional<Question> findbyId(@PathVariable("id")int id)
 	{
 		return su.findById(id);
 	}
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public List<Commentaire> getAll()
+	public List<Question> getAll()
 	{
-		return su.getAllCommentaire();
+		return su.getAllQuestion();
 	}
 	
 	

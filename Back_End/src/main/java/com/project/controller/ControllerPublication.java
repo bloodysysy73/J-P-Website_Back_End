@@ -11,6 +11,7 @@ import java.util.Locale;
 import javax.persistence.Column;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ public class ControllerPublication {
 	@Autowired
 	ServicePublication servicePublication ; 
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public Publication ajouter_modifier(@RequestBody Publication publication)
 	{
@@ -42,6 +44,7 @@ public class ControllerPublication {
 		return servicePublication.addOrModify(publication);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value="/edit",method=RequestMethod.PUT)
 	public Publication modify(@RequestBody Publication Publication)
 	{		
@@ -61,6 +64,7 @@ public class ControllerPublication {
 		return servicePublication.addOrModify(Publication);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
 	public void supprimer_Publication(@PathVariable("id")int id) {
 		servicePublication.deleteById(id);
