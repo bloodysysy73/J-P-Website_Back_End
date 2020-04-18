@@ -20,6 +20,7 @@ public interface ServiceUtilisateur {
 	public Utilisateur findbylogin(String login); // pour l'utilisateur
 	public Utilisateur findByid(int id);
 	public String retrievepseudo(String login);
+	public String getimg(String login);
 
 
 }

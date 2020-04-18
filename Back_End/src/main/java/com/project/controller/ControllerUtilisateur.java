@@ -1,11 +1,18 @@
 package com.project.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -111,6 +118,10 @@ public class ControllerUtilisateur {
 		if (u.getImage() == null) {
 			u.setImage((user.getImage()));
 		}
+		
+		if (u.getImgFile() == null) {
+			u.setImgFile((user.getImgFile()));
+		}
 
 		if (u.getRoles() == null) {
 			u.setRoles((user.getRoles()));
@@ -120,6 +131,49 @@ public class ControllerUtilisateur {
 
 		return su.addOrModifyUtilisateur(u);
 	}
+	
+	//@PreAuthorize()
+		//TODO authorize current user
+		@RequestMapping(value = "/updateImg", method = RequestMethod.PUT)
+		public Utilisateur updateImg(@RequestBody Utilisateur u) {
+
+			Utilisateur user = su.findbylogin(u.getLogin());
+			
+			//transformer le dataURL en bufferedImage
+			String str = u.getImage();
+			File imgFile = new File(u.getNom());
+			
+			byte[] imagedata = java.util.Base64.getDecoder().decode(str.substring(str.indexOf(",") + 1));
+			BufferedImage bufferedImage = null;
+			try {
+				bufferedImage = ImageIO.read(new ByteArrayInputStream(imagedata));
+			} catch (IOException e) {
+				System.out.println("erreur 1 transformation IMG to blob");
+				e.printStackTrace();
+			}
+			
+			try {
+				ImageIO.write(bufferedImage, "png", imgFile);
+			} catch (IOException e) {
+				System.out.println("erreur 2 transformation IMG to blob");
+				e.printStackTrace();
+			}
+			
+			System.out.println("the bufferedImage : " + bufferedImage);
+			
+			System.out.println("the file : " + imgFile);
+			user.setImgFile(imgFile);
+			user.setImage(u.getNom());
+			
+			return su.addOrModifyUtilisateur(user);
+		}
+		
+		@RequestMapping(value = "/getimg/{login}", method = RequestMethod.GET)
+		public String getimg(@PathVariable("login") String login) {
+
+			
+			return su.getimg(login);
+		}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)

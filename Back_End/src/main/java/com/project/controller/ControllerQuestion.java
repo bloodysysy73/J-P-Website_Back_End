@@ -36,10 +36,11 @@ public class ControllerQuestion {
 	@Autowired
 	ServiceUtilisateur us;
 		
+	@PreAuthorize("isAuthenticated()")  
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public Question addormodify(@RequestBody Question question)
 	{
-		System.out.println("QUESTION" + question);
+		System.out.println("QUESTION : " + question);
 		Utilisateur user = new Utilisateur();
 		Utilisateur user2 = new Utilisateur();
 		user2 = question.getUser();
