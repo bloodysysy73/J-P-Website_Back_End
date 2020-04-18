@@ -71,6 +71,11 @@ public class ServiceUtilisateurImp implements ServiceUtilisateur {
 	public String retrievepseudo(String login) {
 		return utilisateurrep.retrievepseudo(login);
 	}
+
+	@Override
+	public String getimg(String login) {
+		return utilisateurrep.getimg(login);
+	}
 	
 	
 

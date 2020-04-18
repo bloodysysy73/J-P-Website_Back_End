@@ -1,5 +1,7 @@
 package com.project.model;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -42,6 +44,8 @@ public class Utilisateur {
 	private String nbenfant ;
 	
 	private String image;
+	
+	private File ImgFile;
 	
 	
 	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
@@ -169,6 +173,16 @@ public class Utilisateur {
 	}
 
 
+	public File getImgFile() {
+		return ImgFile;
+	}
+
+
+	public void setImgFile(File imgFile) {
+		ImgFile = imgFile;
+	}
+
+
 	public List<Role> getRoles() {
 		return roles;
 	}
@@ -184,12 +198,12 @@ public class Utilisateur {
 		return "Utilisateur [id=" + id + ", login=" + login + ", pseudo=" + pseudo + ", password=" + password + ", nom="
 				+ nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateInscription=" + dateInscription
 				+ ", isAdherent=" + isAdherent + ", description=" + description + ", nbenfant=" + nbenfant + ", image="
-				+ image + ", roles=" + roles + "]";
+				+ image + ", ImgFile=" + ImgFile + ", roles=" + roles + "]";
 	}
 
 
 	public Utilisateur(int id, String login, String pseudo, String password, String nom, String prenom, String adresse,
-			String dateInscription, boolean isAdherent, String description, String nbenfant, String image,
+			String dateInscription, boolean isAdherent, String description, String nbenfant, String image, File imgFile,
 			List<Role> roles) {
 		super();
 		this.id = id;
@@ -204,6 +218,7 @@ public class Utilisateur {
 		this.description = description;
 		this.nbenfant = nbenfant;
 		this.image = image;
+		ImgFile = imgFile;
 		this.roles = roles;
 	}
 
@@ -213,8 +228,6 @@ public class Utilisateur {
 	}
 
 
-
 	
-
-
+	
 }
