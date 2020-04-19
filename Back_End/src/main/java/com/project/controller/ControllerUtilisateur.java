@@ -4,14 +4,19 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +37,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 
-
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/user")
@@ -51,7 +55,7 @@ public class ControllerUtilisateur {
 		String password = utilisateur.getPassword();
 		if (password != null) {
 			password = MyProjectSpringApplication.getpce().encode(password);
-		}else {
+		} else {
 			password = MyProjectSpringApplication.getpce().encode("azertyuiop123456789?!");
 		}
 		utilisateur.setPassword(password);
@@ -67,8 +71,8 @@ public class ControllerUtilisateur {
 		return su.addOrModifyUtilisateur(utilisateur);
 	}
 
-	//@PreAuthorize()
-	//TODO authorize current user
+	// @PreAuthorize()
+	// TODO authorize current user
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	public Utilisateur modify(@RequestBody Utilisateur u) {
 
@@ -86,7 +90,7 @@ public class ControllerUtilisateur {
 
 		if (u.getPassword() == null) {
 			u.setPassword((user.getPassword()));
-		}else {
+		} else {
 			String password = MyProjectSpringApplication.getpce().encode(u.getPassword());
 			u.setPassword(password);
 		}
@@ -118,9 +122,9 @@ public class ControllerUtilisateur {
 		if (u.getImage() == null) {
 			u.setImage((user.getImage()));
 		}
-		
-		if (u.getImgFile() == null) {
-			u.setImgFile((user.getImgFile()));
+
+		if (u.getImgBlob() == null) {
+			u.setImgBlob((user.getImgBlob()));
 		}
 
 		if (u.getRoles() == null) {
@@ -131,49 +135,66 @@ public class ControllerUtilisateur {
 
 		return su.addOrModifyUtilisateur(u);
 	}
-	
-	//@PreAuthorize()
-		//TODO authorize current user
-		@RequestMapping(value = "/updateImg", method = RequestMethod.PUT)
-		public Utilisateur updateImg(@RequestBody Utilisateur u) {
 
-			Utilisateur user = su.findbylogin(u.getLogin());
-			
-			//transformer le dataURL en bufferedImage
-			String str = u.getImage();
-			File imgFile = new File(u.getNom());
-			
-			byte[] imagedata = java.util.Base64.getDecoder().decode(str.substring(str.indexOf(",") + 1));
-			BufferedImage bufferedImage = null;
-			try {
-				bufferedImage = ImageIO.read(new ByteArrayInputStream(imagedata));
-			} catch (IOException e) {
-				System.out.println("erreur 1 transformation IMG to blob");
-				e.printStackTrace();
-			}
-			
-			try {
-				ImageIO.write(bufferedImage, "png", imgFile);
-			} catch (IOException e) {
-				System.out.println("erreur 2 transformation IMG to blob");
-				e.printStackTrace();
-			}
-			
-			System.out.println("the bufferedImage : " + bufferedImage);
-			
-			System.out.println("the file : " + imgFile);
-			user.setImgFile(imgFile);
-			user.setImage(u.getNom());
-			
-			return su.addOrModifyUtilisateur(user);
-		}
+//	// @PreAuthorize()
+//	// TODO authorize current user
+//	@RequestMapping(value = "/updateImg", method = RequestMethod.PUT)
+//	public Utilisateur updateImg(@RequestBody Utilisateur u) {
+//
+//		Utilisateur user = su.findbylogin(u.getLogin());
+//
+//		// transformer le dataURL en bufferedImage
+//		String str = u.getImage();
+//		File imgFile = new File(u.getNom());
+//
+//		byte[] imagedata = java.util.Base64.getDecoder().decode(str.substring(str.indexOf(",") + 1));
+//		BufferedImage bufferedImage = null;
+//		try {
+//			bufferedImage = ImageIO.read(new ByteArrayInputStream(imagedata));
+//		} catch (IOException e) {
+//			System.out.println("erreur 1 transformation IMG to blob");
+//			e.printStackTrace();
+//		}
+//
+//		try {
+//			ImageIO.write(bufferedImage, "png", imgFile);
+//		} catch (IOException e) {
+//			System.out.println("erreur 2 transformation IMG to blob");
+//			e.printStackTrace();
+//		}
+//
+//		System.out.println("the bufferedImage : " + bufferedImage);
+//
+//		System.out.println("the file : " + imgFile);
+//
+//		user.setImage(u.getNom());
+//
+//		return su.addOrModifyUtilisateur(user);
+//	}
+
+	// @PreAuthorize()
+	// TODO authorize current user
+	@RequestMapping(value = "/updateBlobImg", method = RequestMethod.PUT)
+	public Utilisateur updateBlobImg(@RequestBody Utilisateur u) {
+
+		Utilisateur user = su.findbylogin(u.getLogin());
+		String str = u.getNom();
+		//String base64Data = str.split(",")[1];
+		//byte[] decodedByte = Base64.getDecoder().decode(base64Data);
+		user.setImage(u.getImage());
+		user.setImgBlob(str);
+
 		
-		@RequestMapping(value = "/getimg/{login}", method = RequestMethod.GET)
-		public String getimg(@PathVariable("login") String login) {
 
-			
-			return su.getimg(login);
-		}
+		return su.addOrModifyUtilisateur(user);
+	}
+		
+
+	@RequestMapping(value = "/getimg/{login}", method = RequestMethod.GET)
+	public String getimg(@PathVariable("login") String login) {
+
+		return su.getimg(login);
+	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
@@ -218,11 +239,12 @@ public class ControllerUtilisateur {
 			return null;
 		}
 	}
-	
+
 	@RequestMapping(value = "/googletoken", method = RequestMethod.POST)
 	public Utilisateur checkgoogletoken(@RequestBody Utilisateur utilisateur) {
 
-	//	TODO : vérifier le token google. Si il est OK : coonecter le user et renvoyer un token valide
+		// TODO : vérifier le token google. Si il est OK : coonecter le user et renvoyer
+		// un token valide
 //		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
 //			    // Specify the CLIENT_ID of the app that accesses the backend:
 //			    .setAudience(Collections.singletonList("479915262149-5mfpd5lv59q93scecehcbdtin9ovie1c.apps.googleusercontent.com")).build();
