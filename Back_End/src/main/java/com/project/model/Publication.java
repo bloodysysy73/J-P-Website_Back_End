@@ -5,7 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 public class Publication {
@@ -47,6 +50,9 @@ public class Publication {
 	@Column(name="ICONE")
 	String icone_name;
 	
+	@Lob 
+	@Type(type = "org.hibernate.type.TextType")
+	private String imgBlob;
 	
 	
 	public Publication(int id, String title, String description, String imageName, String title2, String description2,
@@ -152,7 +158,8 @@ public class Publication {
 	public String toString() {
 		return "Publication [id=" + id + ", title=" + title + ", description=" + description + ", imageName="
 				+ imageName + ", title2=" + title2 + ", description2=" + description2 + ", date=" + date + ", heure="
-				+ heure + ", poste_le=" + poste_le + ", login=" + login + ", icone_name=" + icone_name + "]";
+				+ heure + ", poste_le=" + poste_le + ", login=" + login + ", icone_name=" + icone_name + ", imgBlob="
+				+ imgBlob + "]";
 	}
 
 	public String getPoste_le() {
@@ -181,6 +188,31 @@ public class Publication {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public Publication(int id, String title, String description, String imageName, String title2, String description2,
+			String date, String heure, String poste_le, String login, String icone_name, String imgBlob) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.imageName = imageName;
+		this.title2 = title2;
+		this.description2 = description2;
+		this.date = date;
+		this.heure = heure;
+		this.poste_le = poste_le;
+		this.login = login;
+		this.icone_name = icone_name;
+		this.imgBlob = imgBlob;
+	}
+
+	public String getImgBlob() {
+		return imgBlob;
+	}
+
+	public void setImgBlob(String imgBlob) {
+		this.imgBlob = imgBlob;
 	}
 	
 	

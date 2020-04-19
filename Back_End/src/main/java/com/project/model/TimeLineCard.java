@@ -5,7 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "Evenement")
@@ -18,34 +21,39 @@ public class TimeLineCard {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_TIMELINECARD")
-	int id;
+	private int id;
 
 	@Column(name="TITLE")
-	String title;
+	private String title;
 	
 	@Column(name="DESCRIPTION")
-	String description;
+	private String description;
 	
 	@Column(name="IMAGE")
-	String imageName;
+	private String imageName;
 	
 	@Column(name="TITLE2")
-	String title2;
+	private String title2;
 	
 	@Column(name="DESCRIPTION2")
-	String description2;
+	private String description2;
 	
 	@Column(name="DATE")
-	String date;
+	private String date;
 	
 	@Column(name="HEURE")
-	String heure;
+	private String heure;
 
 	@Column(name="POSTE_LE")
-	String poste_le;
+	private String poste_le;
 	
 	@Column(name="ICONE")
-	String icone_name;
+	private String icone_name;
+		
+	@Lob 
+	@Type(type = "org.hibernate.type.TextType")
+	private String imgBlob;
+	
 	
 	public int getId() {
 		return id;
@@ -126,7 +134,7 @@ public class TimeLineCard {
 	public String toString() {
 		return "TimeLineCard [id=" + id + ", title=" + title + ", description=" + description + ", imageName="
 				+ imageName + ", title2=" + title2 + ", description2=" + description2 + ", date=" + date + ", heure="
-				+ heure + ", poste_le=" + poste_le + "]";
+				+ heure + ", poste_le=" + poste_le + ", icone_name=" + icone_name + ", imgBlob=" + imgBlob + "]";
 	}
 
 	public String getPoste_le() {
@@ -155,6 +163,30 @@ public class TimeLineCard {
 
 	public void setIcone_name(String icone_name) {
 		this.icone_name = icone_name;
+	}
+
+	public String getImgBlob() {
+		return imgBlob;
+	}
+
+	public void setImgBlob(String imgBlob) {
+		this.imgBlob = imgBlob;
+	}
+
+	public TimeLineCard(int id, String title, String description, String imageName, String title2, String description2,
+			String date, String heure, String poste_le, String icone_name, String imgBlob) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.imageName = imageName;
+		this.title2 = title2;
+		this.description2 = description2;
+		this.date = date;
+		this.heure = heure;
+		this.poste_le = poste_le;
+		this.icone_name = icone_name;
+		this.imgBlob = imgBlob;
 	}
 	
 	
