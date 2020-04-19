@@ -2,6 +2,7 @@ package com.project.model;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.sql.Blob;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 public class Utilisateur {
@@ -45,7 +49,9 @@ public class Utilisateur {
 	
 	private String image;
 	
-	private File ImgFile;
+	@Lob 
+	@Type(type = "org.hibernate.type.TextType")
+	private String imgBlob;
 	
 	
 	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
@@ -173,13 +179,13 @@ public class Utilisateur {
 	}
 
 
-	public File getImgFile() {
-		return ImgFile;
+	public String getImgBlob() {
+		return imgBlob;
 	}
 
 
-	public void setImgFile(File imgFile) {
-		ImgFile = imgFile;
+	public void setImgBlob(String imgBlob) {
+		this.imgBlob = imgBlob;
 	}
 
 
@@ -198,13 +204,13 @@ public class Utilisateur {
 		return "Utilisateur [id=" + id + ", login=" + login + ", pseudo=" + pseudo + ", password=" + password + ", nom="
 				+ nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateInscription=" + dateInscription
 				+ ", isAdherent=" + isAdherent + ", description=" + description + ", nbenfant=" + nbenfant + ", image="
-				+ image + ", ImgFile=" + ImgFile + ", roles=" + roles + "]";
+				+ image + ", imgBlob=" + imgBlob + ", roles=" + roles + "]";
 	}
 
 
 	public Utilisateur(int id, String login, String pseudo, String password, String nom, String prenom, String adresse,
-			String dateInscription, boolean isAdherent, String description, String nbenfant, String image, File imgFile,
-			List<Role> roles) {
+			String dateInscription, boolean isAdherent, String description, String nbenfant, String image,
+			String imgBlob, List<Role> roles) {
 		super();
 		this.id = id;
 		this.login = login;
@@ -218,7 +224,7 @@ public class Utilisateur {
 		this.description = description;
 		this.nbenfant = nbenfant;
 		this.image = image;
-		ImgFile = imgFile;
+		this.imgBlob = imgBlob;
 		this.roles = roles;
 	}
 
