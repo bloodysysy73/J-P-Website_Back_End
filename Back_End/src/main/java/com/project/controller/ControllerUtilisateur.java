@@ -136,41 +136,6 @@ public class ControllerUtilisateur {
 		return su.addOrModifyUtilisateur(u);
 	}
 
-//	// @PreAuthorize()
-//	// TODO authorize current user
-//	@RequestMapping(value = "/updateImg", method = RequestMethod.PUT)
-//	public Utilisateur updateImg(@RequestBody Utilisateur u) {
-//
-//		Utilisateur user = su.findbylogin(u.getLogin());
-//
-//		// transformer le dataURL en bufferedImage
-//		String str = u.getImage();
-//		File imgFile = new File(u.getNom());
-//
-//		byte[] imagedata = java.util.Base64.getDecoder().decode(str.substring(str.indexOf(",") + 1));
-//		BufferedImage bufferedImage = null;
-//		try {
-//			bufferedImage = ImageIO.read(new ByteArrayInputStream(imagedata));
-//		} catch (IOException e) {
-//			System.out.println("erreur 1 transformation IMG to blob");
-//			e.printStackTrace();
-//		}
-//
-//		try {
-//			ImageIO.write(bufferedImage, "png", imgFile);
-//		} catch (IOException e) {
-//			System.out.println("erreur 2 transformation IMG to blob");
-//			e.printStackTrace();
-//		}
-//
-//		System.out.println("the bufferedImage : " + bufferedImage);
-//
-//		System.out.println("the file : " + imgFile);
-//
-//		user.setImage(u.getNom());
-//
-//		return su.addOrModifyUtilisateur(user);
-//	}
 
 	// @PreAuthorize()
 	// TODO authorize current user
@@ -179,12 +144,8 @@ public class ControllerUtilisateur {
 
 		Utilisateur user = su.findbylogin(u.getLogin());
 		String str = u.getNom();
-		//String base64Data = str.split(",")[1];
-		//byte[] decodedByte = Base64.getDecoder().decode(base64Data);
 		user.setImage(u.getImage());
 		user.setImgBlob(str);
-
-		
 
 		return su.addOrModifyUtilisateur(user);
 	}
