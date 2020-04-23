@@ -30,83 +30,84 @@ public class Reponse {
 
 		private String texte;
 		private String date;
+		private String loginUser;
 		
 
-		@ManyToOne(fetch = FetchType.LAZY)
-		@NotFound(action = NotFoundAction.IGNORE)
-		@JoinColumn(name="ID_UTILISATEUR")
-		private Utilisateur utilisateur;
+//		@ManyToOne(fetch = FetchType.LAZY)
+//		@NotFound(action = NotFoundAction.IGNORE)
+//		@JoinColumn(name="ID_UTILISATEUR")
+//		private Utilisateur utilisateur;
 
-		@ManyToOne(fetch = FetchType.LAZY)
-		@NotFound(action = NotFoundAction.IGNORE)
-		@JoinColumn(name="ID_QUESTION")
-		private Question question;
+//		@ManyToOne(fetch = FetchType.LAZY)
+//		private Question question;
+
 
 		public int getId() {
 			return id;
 		}
 
+
 		public void setId(int id) {
 			this.id = id;
 		}
+
 
 		public String getTexte() {
 			return texte;
 		}
 
+
 		public void setTexte(String texte) {
 			this.texte = texte;
 		}
+
 
 		public String getDate() {
 			return date;
 		}
 
+
 		public void setDate(String date) {
 			this.date = date;
 		}
 
-		public Question getQuestion() {
-			return question;
+
+		public String getLoginUser() {
+			return loginUser;
 		}
 
-		public void setQuestion(Question question) {
-			this.question = question;
+
+		public void setLoginUser(String loginUser) {
+			this.loginUser = loginUser;
 		}
+
+
 
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
 
+
 		@Override
 		public String toString() {
-			return "Reponse [id=" + id + ", texte=" + texte + ", date=" + date + ", utilisateur=" + utilisateur
-					+ ", question=" + question + "]";
+			return "Reponse [id=" + id + ", texte=" + texte + ", date=" + date + ", loginUser=" + loginUser
+					;
+		}
+
+
+		public Reponse(int id, String texte, String date, String loginUser) {
+			super();
+			this.id = id;
+			this.texte = texte;
+			this.date = date;
+			this.loginUser = loginUser;
 		}
 
 
 		public Reponse() {
 			super();
 		}
-
-		public Utilisateur getUtilisateur() {
-			return utilisateur;
-		}
-
-		public void setUtilisateur(Utilisateur utilisateur) {
-			this.utilisateur = utilisateur;
-		}
-
-		public Reponse(int id, String texte, String date, Utilisateur utilisateur, Question question) {
-			super();
-			this.id = id;
-			this.texte = texte;
-			this.date = date;
-			this.utilisateur = utilisateur;
-			this.question = question;
-		}
-		 
-		 
 		
 		
+
 }
