@@ -71,8 +71,7 @@ public class ControllerUtilisateur {
 		return su.addOrModifyUtilisateur(utilisateur);
 	}
 
-	// @PreAuthorize()
-	// TODO authorize current user
+	@PreAuthorize("hasRole('ROLE_ADMIN') or  @securityService.canEditUser(principal, #u.login)")
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	public Utilisateur modify(@RequestBody Utilisateur u) {
 
@@ -138,7 +137,7 @@ public class ControllerUtilisateur {
 
 
 	// @PreAuthorize()
-	// TODO authorize current user
+	@PreAuthorize("hasRole('ROLE_ADMIN') or  @securityService.canEditUser(principal, #u.login)")
 	@RequestMapping(value = "/updateBlobImg", method = RequestMethod.PUT)
 	public Utilisateur updateBlobImg(@RequestBody Utilisateur u) {
 
@@ -169,12 +168,13 @@ public class ControllerUtilisateur {
 		return su.getAllUtilisateur();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') ")
+	@PreAuthorize("hasRole('ROLE_ADMIN')" )
 	@RequestMapping(value = "/findbyid/{id}", method = RequestMethod.GET)
 	public Optional<Utilisateur> findbyId(@PathVariable("id") int id) {
 		return su.findById(id);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN') or  @securityService.canEditUser(principal, #login)")
 	@RequestMapping(value = "/findbylogin/{login}", method = RequestMethod.GET)
 	public Utilisateur findbyId(@PathVariable("login") String login) {
 		return su.findbylogin(login);

@@ -84,8 +84,8 @@ public class ControllerTimeLineCard {
 		return su.addOrModifyTimeLineCard(timeLineCard);
 	}
 
-	// @PreAuthorize()
-	// TODO authorize current user
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/updateBlobImg", method = RequestMethod.PUT)
 	public TimeLineCard updateBlobImg(@RequestBody TimeLineCard t) {
 

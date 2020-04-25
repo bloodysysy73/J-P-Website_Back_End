@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,10 +53,13 @@ public class ControllerMessage {
 		     
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
 	public void supprimer_Message(@PathVariable("id")int id) {
 		sm.deleteById(id);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public List<Message> getAll()
 	{
