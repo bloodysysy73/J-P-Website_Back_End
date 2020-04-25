@@ -57,15 +57,16 @@ public class ControllerQuestion {
 		return su.addOrModifyQuestion(question);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or  @securityService.canDeleteResponse(principal, #id)")
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
 	public void deleteplayer(@PathVariable("id")int id) {
 		su.deletebyid(id);
 	}
 	
 	@RequestMapping(value="/findbyid/{id}",method=RequestMethod.GET)
-	public Optional<Question> findbyId(@PathVariable("id")int id)
+	public Question findbyId(@PathVariable("id")int id)
 	{
-		return su.findById(id);
+		return su.findByid(id);
 	}
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)

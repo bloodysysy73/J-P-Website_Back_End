@@ -89,7 +89,7 @@ public class ControllerPublication {
 	}
 
 	// @PreAuthorize()
-	// TODO authorize current user
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/updateBlobImg", method = RequestMethod.PUT)
 	public Publication updateBlobImg(@RequestBody Publication p) {
 

@@ -31,6 +31,8 @@ public class Reponse {
 		private String texte;
 		private String date;
 		private String loginUser;
+		private String pseudo;
+		int idQuestion ;
 		
 
 //		@ManyToOne(fetch = FetchType.LAZY)
@@ -106,6 +108,26 @@ public class Reponse {
 
 		public Reponse() {
 			super();
+		}
+
+
+		public String getPseudo() {
+			return pseudo;
+		}
+
+
+		public void setPseudo(String pseudo) {
+			this.pseudo = pseudo;
+		}
+
+
+		public int getIdQuestion() {
+			return idQuestion;
+		}
+
+
+		public void setIdQuestion(int idQuestion) {
+			this.idQuestion = idQuestion;
 		}
 		
 		

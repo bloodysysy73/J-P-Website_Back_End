@@ -33,20 +33,16 @@ public class ServiceImpQuestion implements ServiceQuestion{
 		return QuestionRep.findAll();
 	}
 
-	@Override
-	public Optional<Question> findById(int id) {
-		return QuestionRep.findById(id);
-	}
 
 	@Override
 	public void deletebyid(int id) {
 		QuestionRep.deleteById(id);		
 	}
 
+
 	@Override
-	public List<Question> findByNote(int note) {
-		// TODO Auto-generated method stub
-		return null;
+	public Question findByid(int id) {
+		return QuestionRep.findByid(id);
 	}
 
 

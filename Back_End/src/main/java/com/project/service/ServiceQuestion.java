@@ -12,12 +12,8 @@ public interface ServiceQuestion {
 	public Question addOrModifyQuestion(Question u);
 	public void deleteQuestion(Question p);
 	public List<Question> getAllQuestion();
-	public Optional<Question> findById(int id);
+	public Question findByid(int id);
 	public void deletebyid(int id);
-	public List<Question> findByNote(int note); 
-
-
-
 
 
 

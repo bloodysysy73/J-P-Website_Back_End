@@ -10,6 +10,7 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.model.Question;
 import com.project.model.Reponse;
+import com.project.model.Utilisateur;
+import com.project.service.ServiceQuestion;
 import com.project.service.ServiceReponse;
+import com.project.service.ServiceUtilisateur;
 
 
 
@@ -29,7 +34,14 @@ public class ControllerReponse {
 
 	@Autowired
 	ServiceReponse su;
+	
+	@Autowired
+	ServiceUtilisateur us;
+	
+	@Autowired
+	ServiceQuestion sq;
 		
+	@PreAuthorize("isAuthenticated()")  
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public Reponse addormodify(@RequestBody Reponse reponse)
 	{
@@ -38,9 +50,18 @@ public class ControllerReponse {
 		String strDate = dateFormat.format(date);  
 		reponse.setDate(strDate);
 		
-		return su.addOrModifyReponse(reponse);
+		su.addOrModifyReponse(reponse);
+		Question question = sq.findByid(reponse.getIdQuestion());
+		List<Reponse> reponses = question.getReponses();
+		reponses.add(reponse);
+		question.setReponses(reponses);
+		sq.addOrModifyQuestion(question);
+		
+		return reponse;
+		
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') ")
 	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
 	public void deleteplayer(@PathVariable("id")int id) {
 		su.deletebyid(id);
