@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,8 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,11 +34,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.MyProjectSpringApplication;
 import com.project.model.Role;
 import com.project.model.Utilisateur;
+import com.project.security.SecurityConstants;
 import com.project.service.ServiceUtilisateur;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 
 @RestController
 @CrossOrigin
@@ -56,7 +67,7 @@ public class ControllerUtilisateur {
 		if (password != null) {
 			password = MyProjectSpringApplication.getpce().encode(password);
 		} else {
-			password = MyProjectSpringApplication.getpce().encode("azertyuiop123456789?!");
+			password = "$2a$10$JsfCZaaLxrkQERXWvbBYyuD/p0GuoQS0eYV5MoouTlMMrrFK6EQnG";
 		}
 		utilisateur.setPassword(password);
 		utilisateur.setDateInscription(datePourInscription);
@@ -135,7 +146,6 @@ public class ControllerUtilisateur {
 		return su.addOrModifyUtilisateur(u);
 	}
 
-
 	// @PreAuthorize()
 	@PreAuthorize("hasRole('ROLE_ADMIN') or  @securityService.canEditUser(principal, #u.login)")
 	@RequestMapping(value = "/updateBlobImg", method = RequestMethod.PUT)
@@ -148,7 +158,6 @@ public class ControllerUtilisateur {
 
 		return su.addOrModifyUtilisateur(user);
 	}
-		
 
 	@RequestMapping(value = "/getimg/{login}", method = RequestMethod.GET)
 	public String getimg(@PathVariable("login") String login) {
@@ -168,7 +177,7 @@ public class ControllerUtilisateur {
 		return su.getAllUtilisateur();
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')" )
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/findbyid/{id}", method = RequestMethod.GET)
 	public Optional<Utilisateur> findbyId(@PathVariable("id") int id) {
 		return su.findById(id);
@@ -202,18 +211,48 @@ public class ControllerUtilisateur {
 	}
 
 	@RequestMapping(value = "/googletoken", method = RequestMethod.POST)
-	public Utilisateur checkgoogletoken(@RequestBody Utilisateur utilisateur) {
+	public String checkgoogletoken(@RequestBody String googleIdToken) throws GeneralSecurityException, IOException {
 
-		// TODO : vérifier le token google. Si il est OK : coonecter le user et renvoyer
-		// un token valide
-//		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-//			    // Specify the CLIENT_ID of the app that accesses the backend:
-//			    .setAudience(Collections.singletonList("479915262149-5mfpd5lv59q93scecehcbdtin9ovie1c.apps.googleusercontent.com")).build();
-//
-//		
-//
+		System.out.println(googleIdToken);
+		HttpTransport transport = new NetHttpTransport();
+		JsonFactory mJFactory = new JacksonFactory();
 
-		return utilisateur;
+		// TODO : vérifier le token google. Si il est OK
+		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, mJFactory)
+				.setAudience(Collections
+						.singletonList("479915262149-5mfpd5lv59q93scecehcbdtin9ovie1c.apps.googleusercontent.com"))
+				.build();
+
+		System.out.println("avant vérifier :" + googleIdToken);
+
+		GoogleIdToken idToken = verifier.verify(googleIdToken);
+
+		System.out.println("vérifier :" + idToken);
+
+		String jwt = "";
+
+		if (idToken != null) {
+			Payload payload = idToken.getPayload();
+
+			// Print user identifier
+			String userMail = payload.getEmail();
+			// System.out.println("User mail: " + userMail);
+			// String userId = payload.getSubject();
+			// System.out.println("User ID: " + userId);
+
+			User springUser = (User) new User(userMail, "", true, true, true, true,
+					AuthorityUtils.createAuthorityList("USER"));
+
+			jwt = Jwts.builder().setSubject(springUser.getUsername())
+					.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+					.signWith(SignatureAlgorithm.HS256, SecurityConstants.SECRET)
+					.claim("roles", springUser.getAuthorities()).compact();
+
+		} else {
+			System.out.println("Invalid ID token.");
+		}
+
+		return "Bearer " + jwt;
 	}
 
 }
