@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
@@ -67,7 +68,18 @@ public class ControllerUtilisateur {
 		if (password != null) {
 			password = MyProjectSpringApplication.getpce().encode(password);
 		} else {
-			password = "$2a$10$JsfCZaaLxrkQERXWvbBYyuD/p0GuoQS0eYV5MoouTlMMrrFK6EQnG";
+			// génère password aléatoire de length 20
+			// FIXME : envoyer par mail
+
+			Random r = new Random();
+			String alphabet = "123456789azertyuiopqsdfghjklmwxcvbn?!*-+";
+			StringBuilder passwordrandom = new StringBuilder();
+
+			for (int i = 0; i < 20; i++) {
+				passwordrandom.append(alphabet.charAt(r.nextInt(alphabet.length())));
+			}
+			password = passwordrandom.toString();
+			password = MyProjectSpringApplication.getpce().encode(password);
 		}
 		utilisateur.setPassword(password);
 		utilisateur.setDateInscription(datePourInscription);
@@ -223,22 +235,14 @@ public class ControllerUtilisateur {
 						.singletonList("479915262149-5mfpd5lv59q93scecehcbdtin9ovie1c.apps.googleusercontent.com"))
 				.build();
 
-		System.out.println("avant vérifier :" + googleIdToken);
-
 		GoogleIdToken idToken = verifier.verify(googleIdToken);
-
-		System.out.println("vérifier :" + idToken);
 
 		String jwt = "";
 
 		if (idToken != null) {
 			Payload payload = idToken.getPayload();
 
-			// Print user identifier
 			String userMail = payload.getEmail();
-			// System.out.println("User mail: " + userMail);
-			// String userId = payload.getSubject();
-			// System.out.println("User ID: " + userId);
 
 			User springUser = (User) new User(userMail, "", true, true, true, true,
 					AuthorityUtils.createAuthorityList("USER"));
