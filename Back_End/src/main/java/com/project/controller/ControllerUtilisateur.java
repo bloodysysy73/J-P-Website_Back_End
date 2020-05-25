@@ -69,7 +69,6 @@ public class ControllerUtilisateur {
 			password = MyProjectSpringApplication.getpce().encode(password);
 		} else {
 			// génère password aléatoire de length 20
-			// FIXME : envoyer par mail
 
 			Random r = new Random();
 			String alphabet = "123456789azertyuiopqsdfghjklmwxcvbn?!*-+";
@@ -97,9 +96,8 @@ public class ControllerUtilisateur {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or  @securityService.canEditUser(principal, #u.login)")
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	public Utilisateur modify(@RequestBody Utilisateur u) {
+System.out.println("user u :" + u);
 
-		// ceci car @JsonInclude(JsonInclude.Include.NON_NULL) ne fonctionne pas,
-		// hibernate n'ignore pas les fields null
 		Utilisateur user = su.findByid(u.getId());
 
 		if (u.getLogin() == null) {
@@ -110,10 +108,13 @@ public class ControllerUtilisateur {
 			u.setPseudo((user.getPseudo()));
 		}
 
-		if (u.getPassword() == null) {
+		String password = u.getPassword();
+		if (password == null) {
 			u.setPassword((user.getPassword()));
 		} else {
-			String password = MyProjectSpringApplication.getpce().encode(u.getPassword());
+			if(!u.getPassword().contains("$2a$10$")) {
+			password = MyProjectSpringApplication.getpce().encode(u.getPassword());
+			}
 			u.setPassword(password);
 		}
 
@@ -152,6 +153,7 @@ public class ControllerUtilisateur {
 		if (u.getRoles() == null) {
 			u.setRoles((user.getRoles()));
 		}
+		System.out.println("user uuser :" + user);
 
 		// if(u.isAdherent() == null){ u.setAdherent((user.isAdherent())) ;}
 
