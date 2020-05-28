@@ -10,13 +10,13 @@
     <img src="https://github.com/bloodysysy73/J-P-Website_Front_End/blob/master/public/images/logojp.jpg" alt="Logo" width="auto" height="80">
   </a>
 
-  <h3 align="center">Simulation site web de l'Association Jumeaux & plus 73 : Front end</h3>
+  <h3 align="center">Simulation site web de l'Association Jumeaux & plus 73 : Back-end</h3>
 
   <p align="center">
     Ce repo contient le code de la partie backend de mon application web "jumeau et plus 73". Cette application web est un site hybride administrateur/forum qui pourrait permettre (si il était déployé) à l'association jumeaux et plus 73 de gérer leurs adhérents, de les informer des évènements passés et à venir et de créer une communauté d'entraide en mettants les membres en relation direct.
    <br />
     <br />
-    <a href="https://github.com/bloodysysy73/J-P-Website_Front_End"><strong>Arborescence des fichiers</strong></a>
+    <a href="https://github.com/bloodysysy73/J-P-Website_Back_End"><strong>Arborescence des fichiers</strong></a>
     <br />
   
   <br />
