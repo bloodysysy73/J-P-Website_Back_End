@@ -7,7 +7,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/bloodysysy73/J-P-Website_Front_End">
-    <img src="public/images/logojp.jpg" alt="Logo" width="auto" height="80">
+    <img src="https://github.com/bloodysysy73/J-P-Website_Front_End/blob/master/public/images/logojp.jpg" alt="Logo" width="auto" height="80">
   </a>
 
   <h3 align="center">Simulation site web de l'Association Jumeaux & plus 73 : Front end</h3>
