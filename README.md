@@ -13,14 +13,14 @@
   <h3 align="center">Simulation site web de l'Association Jumeaux & plus 73 : Back-end</h3>
 
   <p align="center">
-    Ce repo contient le code de la partie backend de mon application web "jumeau et plus 73". Cette application web est un site hybride administrateur/forum qui pourrait permettre (si il était déployé) à l'association jumeaux et plus 73 de gérer leurs adhérents, de les informer des évènements passés et à venir et de créer une communauté d'entraide en mettants les membres en relation direct.
+    Ce repository contient le code de la partie backend de mon application web "jumeau et plus 73". Cette application web est un site hybride administrateur/forum qui pourrait permettre (s'il était déployé) à l'association jumeaux et plus 73 de gérer leurs adhérents, de les informer des évènements passés et à venir et de créer une communauté d'entraide en mettant les membres en relation direct.
    <br />
     <br />
     <a href="https://github.com/bloodysysy73/J-P-Website_Back_End"><strong>Arborescence des fichiers</strong></a>
     <br />
   
   <br />
-  La partie frontend à été réalisée en javascript avec le framework React JS, la partie backend en JAVA avec le framework spring. Les données sont persistées dans une base de donnée relationelle MySql avec l'ORM hibernate.<br /><br />
+  La partie frontend a été réalisée en javascript avec le framework React JS, la partie backend en JAVA avec le framework spring. Les données sont persistées dans une base de donnée relationelle MySql avec l'ORM hibernate.<br /><br />
     <a href="https://github.com/bloodysysy73/J-P-Website_Front_End/"><strong>Cliquez ici pour accéder au front-end de l'application</strong></a>
     <br />
 </p>
@@ -43,11 +43,11 @@
 <!-- ABOUT THE PROJECT -->
 ## Principe de l'application
 
-ce projet spring boot est le backend d'un projet React en référence ci-avant. Il permet de gérer le site internet d'une association.
+Ce projet spring boot est le backend d'un projet React en référence ci-avant. Il permet de gérer le site internet d'une association.
 
-Les utlisateurs peuvent se créer un compte ou se connecter avec google. Dans les 2 cas le backend créer un compte dans la base de donnée mySql et les identifiants seront utilisés pour la création du token qui permet d'obtenir l'accès au service proposés.
+Les utlisateurs peuvent se créer un compte ou se connecter avec google. Dans les 2 cas le backend créer un compte dans la base de donnée MySql et les identifiants seront utilisés pour la création du token qui permet d'obtenir l'accès au service backends proposés.
 
-la base de donnée contient les données relatifs au 6 classes du projet spring : les utilisateurs, les rôles, les questions posées par les utlisateurs et les réponses associées, les publications et les évènements postés sur le site internet par l'asscoiation. 
+La base de donnée contient les données relatifs au 6 classes du projet spring : les utilisateurs, les rôles, les questions posées par les utlisateurs et les réponses associées, les publications et les évènements postés sur le site internet par l'asscoiation. 
 
 ### Built With
 
